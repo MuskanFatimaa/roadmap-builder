@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dynamic Roadmap Builder</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 20px; background: #f9f9f9; }
+  h2 { text-align: center; margin-bottom: 20px; }
+  .step-card { background: #fff; border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 8px; }
+  .step-card input, .step-card textarea { display: block; width: 100%; margin: 5px 0; padding: 8px; border-radius: 4px; border: 1px solid #ccc; }
+  .step-card button.delete-step { margin-top: 5px; background: #ff4d4f; color: #fff; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; }
+  #add-step, #submit-roadmap { margin: 10px 5px 0 0; padding: 10px 15px; border: none; border-radius: 6px; cursor: pointer; }
+  #add-step { background: #1890ff; color: #fff; }
+  #submit-roadmap { background: #52c41a; color: #fff; }
+  @media (max-width: 600px) {
+    body { margin: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<h2>Create Your Roadmap</h2>
+
+<div id="roadmap-builder">
+  <div id="steps-container"></div>
+  <button id="add-step">+ Add Step</button>
+  <button id="submit-roadmap">Submit Roadmap</button>
+</div>
+
+<!-- Template for steps -->
+<template id="step-template">
+  <div class="step-card">
+    <h3>Step <span class="step-number"></span></h3>
+    <input type="text" placeholder="Heading" class="step-heading" required />
+    <input type="text" placeholder="Subheading" class="step-subheading" />
+    <textarea placeholder="Description" class="step-description"></textarea>
+    <button class="delete-step">Delete Step</button>
+  </div>
+</template>
+
+<script>
+const stepsContainer = document.getElementById('steps-container');
+const addStepBtn = document.getElementById('add-step');
+const submitBtn = document.getElementById('submit-roadmap');
+const stepTemplate = document.getElementById('step-template');
+
+let stepCount = 0;
+
+// Add a new step
+function addStep() {
+  stepCount++;
+  const clone = stepTemplate.content.cloneNode(true);
+  clone.querySelector('.step-number').innerText = stepCount;
+
+  // Delete button
+  clone.querySelector('.delete-step').addEventListener('click', (e) => {
+    e.target.closest('.step-card').remove();
+    updateStepNumbers();
+  });
+
+  stepsContainer.appendChild(clone);
+}
+
+// Update step numbers after deletion
+function updateStepNumbers() {
+  const cards = stepsContainer.querySelectorAll('.step-card');
+  stepCount = 0;
+  cards.forEach((card) => {
+    stepCount++;
+    card.querySelector('.step-number').innerText = stepCount;
+  });
+}
+
+// Submit roadmap data
+function submitRoadmap() {
+  const cards = stepsContainer.querySelectorAll('.step-card');
+  const roadmapData = [];
+
+  cards.forEach((card, index) => {
+    const heading = card.querySelector('.step-heading').value.trim();
+    const subheading = card.querySelector('.step-subheading').value.trim();
+    const description = card.querySelector('.step-description').value.trim();
+
+    if (heading) { // require heading
+      roadmapData.push({
+        stepNumber: index + 1,
+        heading,
+        subheading,
+        description
+      });
+    }
+  });
+
+  if (roadmapData.length === 0) {
+    alert("Please add at least one step with a heading!");
+    return;
+  }
+
+  // Send to GHL webhook
+  fetch('https://your-ghl-webhook-url.com', { // <<< REPLACE WITH YOUR WEBHOOK
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({roadmap: roadmapData})
+  })
+  .then(() => alert("Roadmap submitted successfully!"))
+  .catch((err) => alert("Error submitting roadmap: " + err));
+}
+
+// Event listeners
+addStepBtn.addEventListener('click', addStep);
+submitBtn.addEventListener('click', submitRoadmap);
+
+// Start with one step by default
+addStep();
+</script>
+
+</body>
+</html>
