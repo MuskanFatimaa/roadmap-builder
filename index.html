@@ -5,25 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dynamic Roadmap Builder</title>
 <style>
-  * {
-    box-sizing: border-box;
-  }
-  
+  * { box-sizing: border-box; }
   body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    font-family: 'Inter', sans-serif;
     margin: 0;
     padding: 40px 20px;
-    background: #ffffff;
+    background: #f9fafb;
     color: #333;
     line-height: 1.5;
     min-height: 100vh;
   }
-
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
+  .container { max-width: 1200px; margin: 0 auto; }
   h2 {
     text-align: center;
     margin-bottom: 40px;
@@ -34,7 +26,6 @@
     position: relative;
     padding-bottom: 20px;
   }
-
   h2:after {
     content: '';
     position: absolute;
@@ -43,72 +34,37 @@
     transform: translateX(-50%);
     width: 80px;
     height: 4px;
-    background: linear-gradient(to right, #1a56db, #3b82f6);
+    background: linear-gradient(to right,#1a56db,#3b82f6);
     border-radius: 2px;
   }
-
-  #roadmap-builder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
+  #roadmap-builder { display: flex; flex-direction: column; align-items: center; }
   #steps-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
     gap: 25px;
     width: 100%;
     margin-bottom: 40px;
   }
-
   .step-card {
     background: #fff;
     border-radius: 16px;
-    padding: 28px;
+    padding: 24px;
+    border: 2px solid #e0e7ff;
+    box-shadow: 0 8px 24px rgba(26,86,219,0.06);
     display: flex;
     flex-direction: column;
-    border: 2px solid #e0e7ff;
-    box-shadow: 0 8px 24px rgba(26, 86, 219, 0.06);
-    transition: all 0.3s ease;
+    transition: all 0.3s;
     position: relative;
-    overflow: hidden;
   }
-
-  .step-card:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 6px;
-    height: 100%;
-    background: linear-gradient(to bottom, #1a56db, #3b82f6);
-  }
-
-  .step-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 30px rgba(26, 86, 219, 0.12);
-    border-color: #3b82f6;
-  }
-
   .step-card h3 {
-    margin: 0 0 16px 0;
-    font-size: 1.3rem;
+    margin: 0 0 12px 0;
+    font-size: 1.2rem;
     color: #1e40af;
     font-weight: 600;
     display: flex;
     align-items: center;
+    gap: 10px;
   }
-
-  .step-card h3:before {
-    content: '';
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #3b82f6;
-    margin-right: 10px;
-  }
-
   .step-number {
     display: inline-flex;
     align-items: center;
@@ -119,63 +75,38 @@
     border-radius: 50%;
     color: #1a56db;
     font-weight: 700;
-    margin-right: 12px;
     border: 1px solid #bfdbfe;
   }
-
   .step-card input, .step-card textarea {
     margin: 8px 0;
-    padding: 14px 16px;
+    padding: 12px;
     border-radius: 10px;
     border: 1.5px solid #dbeafe;
     font-size: 0.95rem;
     width: 100%;
-    transition: all 0.2s;
     font-family: inherit;
+    transition: all 0.2s;
   }
-
   .step-card input:focus, .step-card textarea:focus {
     outline: none;
     border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
   }
-
-  .step-card input::placeholder, .step-card textarea::placeholder {
-    color: #94a3b8;
-  }
-
-  .step-card textarea {
-    min-height: 100px;
-    resize: vertical;
-  }
-
+  .step-card textarea { min-height: 100px; resize: vertical; }
   .step-card button.delete-step {
-    margin-top: 16px;
+    margin-top: 12px;
     background: #fef2f2;
     color: #dc2626;
     border: 1.5px solid #fecaca;
-    padding: 10px 18px;
+    padding: 10px 16px;
     border-radius: 10px;
     cursor: pointer;
-    align-self: flex-start;
-    transition: all 0.2s;
     font-weight: 500;
     display: flex;
     align-items: center;
     gap: 6px;
   }
-
-  .step-card button.delete-step:hover {
-    background: #fee2e2;
-    border-color: #fca5a5;
-  }
-
-  .step-card button.delete-step:before {
-    content: '×';
-    font-size: 1.2rem;
-    font-weight: bold;
-  }
-
+  .step-card button.delete-step:before { content: '×'; font-size: 1.2rem; font-weight: bold; }
   .buttons-container {
     display: flex;
     flex-wrap: wrap;
@@ -183,122 +114,32 @@
     justify-content: center;
     margin-top: 20px;
   }
-
-  #add-step, #submit-roadmap, #back-to-funnel {
-    margin: 0;
+  #add-step,#submit-roadmap,#back-to-funnel {
     padding: 14px 28px;
     border: none;
     border-radius: 12px;
     cursor: pointer;
     font-size: 1rem;
     font-weight: 600;
-    transition: all 0.3s;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    letter-spacing: 0.3px;
+    gap: 8px;
   }
-
-  #add-step {
-    background: linear-gradient(to right, #1a56db, #3b82f6);
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(26, 86, 219, 0.25);
-  }
-
-  #add-step:hover { 
-    background: linear-gradient(to right, #1e40af, #2563eb);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(26, 86, 219, 0.3);
-  }
-
-  #add-step:before {
-    content: '+';
-    font-size: 1.4rem;
-  }
-
-  #submit-roadmap {
-    background: linear-gradient(to right, #059669, #10b981);
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
-  }
-
-  #submit-roadmap:hover { 
-    background: linear-gradient(to right, #047857, #0d966e);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(5, 150, 105, 0.3);
-  }
-
-  #back-to-funnel {
-    background: linear-gradient(to right, #d97706, #f59e0b);
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(217, 119, 6, 0.25);
-  }
-
-  #back-to-funnel:hover { 
-    background: linear-gradient(to right, #b45309, #d97706);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(217, 119, 6, 0.3);
-  }
-
-  @media (max-width: 1100px) {
-    #steps-container { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
-  }
-
-  @media (max-width: 768px) {
-    body {
-      padding: 30px 15px;
-    }
-    
-    h2 {
-      font-size: 2rem;
-      margin-bottom: 30px;
-    }
-    
-    #steps-container { 
-      grid-template-columns: 1fr; 
-      gap: 20px;
-    }
-    
-    .step-card {
-      padding: 24px;
-    }
-    
-    .buttons-container {
-      flex-direction: column;
-      width: 100%;
-      max-width: 400px;
-    }
-    
-    #add-step, #submit-roadmap, #back-to-funnel {
-      width: 100%;
-      justify-content: center;
-    }
-  }
-
-  .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 5px;
-  }
-
-  .step-indicator {
-    font-size: 0.85rem;
-    color: #6b7280;
-    background: #f9fafb;
-    padding: 4px 10px;
-    border-radius: 20px;
-    border: 1px solid #e5e7eb;
+  #add-step { background: linear-gradient(to right,#1a56db,#3b82f6); color: #fff; }
+  #submit-roadmap { background: linear-gradient(to right,#059669,#10b981); color: #fff; }
+  #back-to-funnel { background: linear-gradient(to right,#d97706,#f59e0b); color: #fff; }
+  @media(max-width:768px){
+    #steps-container{grid-template-columns:1fr;gap:20px;}
+    .buttons-container{flex-direction:column;width:100%;max-width:400px;}
+    #add-step,#submit-roadmap,#back-to-funnel{width:100%;}
   }
 </style>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
 <div class="container">
   <h2>Create Your Product Roadmap</h2>
-
   <div id="roadmap-builder">
     <div id="steps-container"></div>
     <div class="buttons-container">
@@ -309,17 +150,13 @@
   </div>
 </div>
 
-<!-- Template for steps -->
 <template id="step-template">
   <div class="step-card">
-    <div class="card-header">
-      <h3><span class="step-number"></span> Step</h3>
-      <span class="step-indicator">Required</span>
-    </div>
+    <h3><span class="step-number"></span> Step</h3>
     <input type="text" placeholder="Heading" class="step-heading" required />
     <input type="text" placeholder="Subheading" class="step-subheading" />
     <textarea placeholder="Description" class="step-description"></textarea>
-    <button class="delete-step">Delete</button>
+    <button class="delete-step"></button>
   </div>
 </template>
 
@@ -329,7 +166,6 @@ const addStepBtn = document.getElementById('add-step');
 const submitBtn = document.getElementById('submit-roadmap');
 const backBtn = document.getElementById('back-to-funnel');
 const stepTemplate = document.getElementById('step-template');
-
 let stepCount = 0;
 
 // Add a new step
@@ -337,75 +173,58 @@ function addStep() {
   stepCount++;
   const clone = stepTemplate.content.cloneNode(true);
   clone.querySelector('.step-number').innerText = stepCount;
-
-  // Delete button
-  clone.querySelector('.delete-step').addEventListener('click', (e) => {
+  clone.querySelector('.delete-step').addEventListener('click', e => {
     e.target.closest('.step-card').remove();
     updateStepNumbers();
   });
-
   stepsContainer.appendChild(clone);
 }
 
-// Update step numbers after deletion
+// Update step numbers
 function updateStepNumbers() {
   const cards = stepsContainer.querySelectorAll('.step-card');
   stepCount = 0;
-  cards.forEach((card) => {
+  cards.forEach((card,index)=>{
     stepCount++;
     card.querySelector('.step-number').innerText = stepCount;
   });
 }
 
-// Submit roadmap data
+// Submit roadmap to Google Sheets
 function submitRoadmap() {
   const cards = stepsContainer.querySelectorAll('.step-card');
   const roadmapData = [];
 
-  cards.forEach((card, index) => {
+  cards.forEach((card,index)=>{
     const heading = card.querySelector('.step-heading').value.trim();
     const subheading = card.querySelector('.step-subheading').value.trim();
     const description = card.querySelector('.step-description').value.trim();
-
-    if (heading) {
-      roadmapData.push({
-        stepNumber: index + 1,
-        heading,
-        subheading,
-        description
-      });
+    if(heading){
+      roadmapData.push({stepNumber:index+1,heading,subheading,description});
     }
   });
 
-  if (roadmapData.length === 0) {
-    alert("Please add at least one step with a heading!");
-    return;
-  }
+  if(roadmapData.length===0){ alert("Please add at least one step with a heading!"); return; }
 
-  // Send to GHL webhook
-  fetch('https://services.leadconnectorhq.com/hooks/0mFPh6mgbdu00rXdOMab/webhook-trigger/59a8f09a-d5ff-464f-a744-9ca65f2f58ff', {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({roadmap: roadmapData})
+  // Replace with your Google Sheets Web App URL
+  fetch('https://script.google.com/macros/s/AKfycbzfnUSZ69KHQMW37mphYJj5jUqZMp18MphdO_OZo3K_Wtl5bU2cA-_oqQ3zHNL0Q7V7/exec', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ email: "user@example.com", roadmap: roadmapData })
   })
-  .then(() => alert("Roadmap submitted successfully!"))
-  .catch((err) => alert("Error submitting roadmap: " + err));
+  .then(()=>alert("Roadmap submitted successfully!"))
+  .catch(err=>alert("Error submitting roadmap: "+err));
 }
 
-// Back to funnel button
-backBtn.addEventListener('click', () => {
-  // Replace URL with the next funnel step
-  window.location.href = "https://app.gohighlevel.com/v2/preview/kG5N7PpkeWWQfcCMfuC5";
-});
+// Back to funnel
+backBtn.addEventListener('click', ()=> window.location.href="https://app.gohighlevel.com/v2/preview/kG5N7PpkeWWQfcCMfuC5");
 
 // Event listeners
 addStepBtn.addEventListener('click', addStep);
 submitBtn.addEventListener('click', submitRoadmap);
 
-// Start with one step by default
+// Start with one step
 addStep();
 </script>
-
 </body>
 </html>
